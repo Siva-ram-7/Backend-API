@@ -18,7 +18,7 @@ app.get('/',(req,res)=>{
 })
 
 
-mangoose.connect('mongodb+srv://sivram1702:XZ94gbKrb4RtsgON@backenddb.bkkzh.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackEndDB')
+mangoose.connect('mongodb+srv://nsramv:rHFxFa6uwRQrSiTK@sivaram.m1aln.mongodb.net/?retryWrites=true&w=majority&appName=sivaram')
 .then(()=>{
     console.log("db connected successfully");
     
@@ -29,6 +29,6 @@ mangoose.connect('mongodb+srv://sivram1702:XZ94gbKrb4RtsgON@backenddb.bkkzh.mong
 })
 
 .catch(()=>{
-    console.log("failed to connect db");
+    console.log("failed to connect db")
     
 })
