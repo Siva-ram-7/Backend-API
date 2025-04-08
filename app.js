@@ -18,6 +18,25 @@ app.get('/',(req,res)=>{
 })
 
 
+app.use('*',function (req,res,next) {
+
+    const err = new Error(`Can't find ${req.originalUrl} on the server`)
+    err.status = 'fail'
+    err.statusCode = 404
+
+    next(err)
+})
+
+
+app.use((error,req,res,next) =>{
+    error.statusCode = error.statusCode || 500;
+    error.status = error.status || 'error'
+    res.status(error.statusCode).json({
+        status :error.statusCode,
+        message:error.message
+    })
+})
+
 mangoose.connect('mongodb+srv://nsramv:rHFxFa6uwRQrSiTK@sivaram.m1aln.mongodb.net/?retryWrites=true&w=majority&appName=sivaram')
 .then(()=>{
     console.log("db connected successfully");

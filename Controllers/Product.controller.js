@@ -3,7 +3,7 @@ const Product = require('../models/product.model')
 
 // app.post('/api/products',
     
-  const create =  async (req,res)=>{
+  const create =  async (req,res ,next)=>{
  try {
     const product = await Product.create(req.body)
 
@@ -12,10 +12,7 @@ const Product = require('../models/product.model')
         product
     })
  } catch (error) {
-    res.status(500).json({
-        msg:"Failed to create",
-        message: error.message
-    })
+  next(error)
  }
 }
 
@@ -34,9 +31,7 @@ const Product = require('../models/product.model')
             products
         })
     } catch (error) {
-        res.status(500).json({
-            err:error.message
-        })
+       next(error)
     }
    }
 
