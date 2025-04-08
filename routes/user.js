@@ -7,6 +7,7 @@ const userController = require('../Controllers/User.contoller')
 
 router.post('/create', userController.create)
 router.get('/view', userController.view)
+router.get('/view/:id', userController.viewOne)
 
 
 

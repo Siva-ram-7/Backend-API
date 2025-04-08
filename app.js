@@ -20,20 +20,34 @@ app.get('/',(req,res)=>{
 
 app.use('*',function (req,res,next) {
 
-    const err = new Error(`Can't find ${req.originalUrl} on the server`)
-    err.status = 'fail'
+
+    const  err = new Error(`Can't find ${req.originalUrl} on the server`)
+     err.status = 'fail'
     err.statusCode = 404
 
     next(err)
 })
 
 
-app.use((error,req,res,next) =>{
+// app.use((error,req,res,next) =>{
+//     error.statusCode = error.statusCode || 500;
+//     error.status = error.status || 'error'
+//     res.status(error.statusCode).json({
+//         status :error.statusCode,
+//         message:error.message
+//     })
+// })
+
+app.use((error,req,res)=>{
     error.statusCode = error.statusCode || 500;
-    error.status = error.status || 'error'
+    error.status = error.status || 'error';
+
+
+
     res.status(error.statusCode).json({
-        status :error.statusCode,
-        message:error.message
+        status : error.status,
+        message:error.message,
+        test: "err from global error handler"
     })
 })
 

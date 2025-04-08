@@ -3,7 +3,7 @@ const Cart = require('../models/Cart.model')
 
 // app.post('/api/products',
     
-  const create =  async (req,res)=>{
+  const create =  async (req,res,error)=>{
  try {
     const product = await Cart.create(req.body)
 
@@ -11,11 +11,12 @@ const Cart = require('../models/Cart.model')
         msg:"Cart created successfully",
         product
     })
+
+
+    
  } catch (error) {
-    res.status(500).json({
-        msg:"Failed to create",
-        message: error.message
-    })
+
+ next(error)
  }
 }
 
@@ -24,19 +25,24 @@ const Cart = require('../models/Cart.model')
     
     
     
-   const view =  async (req,res)=>{
+   const view =  async (req,res, next)=>{
     try {
         const products = await Cart.find({}).populate('user' ,"name email").populate('product' ,"name image quantity price")
 
+
+        if (products.length > 0) {
+            const err = new Error("Cart not found")
+            err.statusCode = 400
+            err.status = "not found"
+            next(err)
+        }
 
         res.status(200).json({
             msg:"cart fetched successfully",
             products
         })
     } catch (error) {
-        res.status(500).json({
-            err:error.message
-        })
+       next(error)
     }
    }
 

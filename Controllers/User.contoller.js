@@ -3,7 +3,7 @@ const User = require('../models/User.model')
 
 // app.post('/api/products',
     
-  const create =  async (req,res)=>{
+  const create =  async (req,res,next)=>{
  try {
     const product = await User.create(req.body)
 
@@ -12,10 +12,7 @@ const User = require('../models/User.model')
         product
     })
  } catch (error) {
-    res.status(500).json({
-        msg:"Failed to create",
-        message: error.message
-    })
+    next(error)
  }
 }
 
@@ -24,7 +21,7 @@ const User = require('../models/User.model')
     
     
     
-   const view =  async (req,res)=>{
+   const view =  async (req,res,next)=>{
     try {
         const Users = await User.find({})
 
@@ -34,13 +31,31 @@ const User = require('../models/User.model')
             Users
         })
     } catch (error) {
-        res.status(500).json({
-            err:error.message
+       next(err)
+    }
+   }
+   const viewOne =  async (req,res,next)=>{
+    try {
+        const User01= await User.findById(req.params.id)
+
+
+        if (!User01) {
+            const err = new Error("User not found")
+            err.statusCode = 400
+            err.status = "not found"
+           return next(err)
+        }
+
+        res.status(200).json({
+            msg:"Users fetched successfully",
+            User01
         })
+    } catch (error) {
+       next(err)
     }
    }
 
 
 
 
-module.exports = {create,view}
+module.exports = {create,view, viewOne}
